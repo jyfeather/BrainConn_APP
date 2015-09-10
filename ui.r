@@ -8,18 +8,12 @@ shinyUI(fluidPage(
   ),
   
   # Application title
-  titlePanel('d3Network Shiny Example'),
-  p('This is an example of using',
-    a(href = 'http://christophergandrud.github.io/d3Network/', 'd3Network'),
-    'with',
-    a(href = 'http://shiny.rstudio.com/', 'Shiny', 'web apps.')
-  ),
+  titlePanel('Brain Connectivity Network Simulator'),
   
-  # Sidebar with a slider input for node opacity
   sidebarLayout(
     sidebarPanel(
-      sliderInput('slider', label = 'Choose node opacity',
-                  min = 0, max = 1, step = 0.01, value = 0.5
+      sliderInput('slider', label = 'choose threshold to control amounts of links',
+                  min = 0, max = 1, step = 0.1, value = 0.5
       )
     ),
     

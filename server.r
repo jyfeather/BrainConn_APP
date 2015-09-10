@@ -1,28 +1,41 @@
 # Load packages
-library(RCurl)
 library(d3Network)
+library(R.matlab)
+library(glasso)
 
 # Load data once
-URL <- "https://raw.githubusercontent.com/christophergandrud/d3Network/master/JSONdata/miserables.json"
-MisJson <- getURL(URL, ssl.verifypeer = FALSE)
+dataraw <- readMat("./data/PET.mat")
+dataobs <- dataraw$PET
+datacov <- cov(t(dataobs))
+res <- glasso(s = datacov, rho = 0.001)
+res <- res$wi
 
-# Convert JSON arrays into data frames
-MisLinks <- JSONtoDF(jsonStr = MisJson, array = "links")
-MisNodes <- JSONtoDF(jsonStr = MisJson, array = "nodes")
+# convert inverse covariance matrix to links
+wi2link <- function(mat) {
+  mat <- abs(mat)
+  links <- data.frame(from = NA, to = NA, weight = NA)
+  for (i in 1:nrow(mat)) {
+    for (j in 1:ncol(mat)) {
+      if (mat[i,j] != 0 & i != j) {
+        links <- rbind(links, c(i-1,j-1,mat[i,j]))
+      } 
+    } 
+  }
+  return(links[-1,])
+}
 
-# Create individual ID
-MisNodes$ID <- 1:nrow(MisNodes)
+# prepare dataset for plotting
+links <- wi2link(res)
+nodes <- read.csv(file = "./data/AAl_Yan.csv")
 
-#### Shiny ####
+# shiny server
 shinyServer(function(input, output) {
-  
   output$networkPlot <- renderPrint({
-    d3ForceNetwork(Nodes = MisNodes,
-                   Links = MisLinks,
-                   Source = "source", Target = "target",
-                   Value = "value", NodeID = "name",
-                   Group = "group", width = 400, height = 500,
-                   opacity = input$slider, standAlone = FALSE,
-                   parentElement = '#networkPlot')
+     d3ForceNetwork(Nodes = nodes,
+                    Links = links,
+                    Source = "from", Target = "to",
+                    Value = "weight", NodeID = "name",
+                    Group = "region", opacity = 0.8, standAlone = FALSE,
+                    parentElement = '#networkPlot')
   })
 })
