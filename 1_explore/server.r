@@ -1,11 +1,9 @@
 # Load packages
 library(d3Network)
-library(R.matlab)
 library(glasso)
 
 # Load data once
-dataraw <- readMat("./data/PET.mat")
-dataobs <- dataraw$PET
+dataobs <- read.table(file = "./data/PET_Yan.csv", header = T)
 datacov <- cov(t(dataobs))
 res <- glasso(s = datacov, rho = 0.001)
 res <- res$wi
@@ -36,6 +34,6 @@ shinyServer(function(input, output) {
                     Source = "from", Target = "to",
                     Value = "weight", NodeID = "name",
                     Group = "region", opacity = 0.8, standAlone = FALSE,
-                    parentElement = '#networkPlot')
+                    parentElement = '#networkPlot', zoom = TRUE)
   })
 })
