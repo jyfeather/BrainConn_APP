@@ -1,0 +1,3 @@
+### Deployment
+
+`jekyll serve`
