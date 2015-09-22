@@ -1,3 +1,3 @@
 ### Deployment
 
-`jekyll serve`
+run `jekyll serve`
