@@ -12,12 +12,10 @@
         <div class="container">
             <div class="docs-inner">
             <h2 class="title text-center">Get Started</h2>            
-            <p>In this website, we provide an interactive web application to help you explore brain network, and compare the differences between Alzheimer's disease and normal subject.</p>
-
             <!-- 1st -->
             <div class="block">
                 <h3 class="sub-title text-center">Data Structure</h3>
-                <p>Only support <a href="https://en.wikipedia.org/wiki/Comma-separated_values">CSV</a> format. Each row represents one subject, and each column represents one region of interest (<a href="https://en.wikipedia.org/wiki/Region_of_interest">ROI</a>). An example is below:</p>
+                <p>The platform currently <strong>ONLY</strong> support <a href="https://en.wikipedia.org/wiki/Comma-separated_values">CSV</a> format. An example of the expected CSV file is shown in below: each row represents one subject, and each column represents one region of interest (<a href="https://en.wikipedia.org/wiki/Region_of_interest">ROI</a>). An example of the CSV file taht you could use to test the platform can be downloaded <a href="https://github.com/jyfeather/BrainConn_APP">here</a>.</p>
                 <table class="tg" align="center">
                   <tr>
                     <th class="tg-s6z2"></th>
@@ -65,30 +63,40 @@
             <!-- 2nd -->
             <div class="block">
                 <h3 class="sub-title text-center">How SICE works</h3>
-                <p>Say Something ...</p>
-                <p class="text-center">
-                    <a class="btn btn-cta-primary" href="https://jyfeather.shinyapps.io/0_intro" target="_blank">View on Shinyapp</a>
-                </p>
-               
+                <p>SICE, which stands for Sparse Inverse Covariance Estimation, is a machine learning learning technique taht was developed in <a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3068623/">this study</a> to learn the brain connectivity network from high-dimensional neuroimaging data. SICE uses the L1-regularization technique to enhance the robustness of the learning results, and uses convex optimization tools to achieve stable and efficient computation.</p>
+                <p>By using the L1-regularization, it allows control of the complexity of the network that can either be specified by user of SICE or by model selection criteria such as Bayesian Information Criterion (BIC).</p>
+                <p>More specifically, the complexity of the network is controlled by the regularization parameter, commonly referred as lambda. For any given lambda, the brain connectivity network that fits the data best (out of all the network models whose complexity is not beyond the complexity specified by lambda) will be identified by SICE.</p> 
+                <img src="{{ site.baseurl }}public/images/penalty.png" alt=""/>
+                <br/>
             </div><!--//block-->
 
             <!-- 3rd -->
             <div class="block">
                 <h3 class="sub-title text-center">SICE for Single Group Analysis</h3>
-                <p>Say Something ...</p>
+                <p>SICE can be used to convert your high-dimensional neuroimaging data into a brain connectivity network. Complex network analysis (<a href="http://www.ncbi.nlm.nih.gov/pubmed/19819337">here</a> is a comprehensive survey) is to characterize the brain connectivity network with a small number of neurobiologically meaningful measures. Network characteristics will be automatically calculated on your brain connectivity network such as the diameter, degree distribution, characteristic path length, global efficiency, clustering coefficient, etc.</p>
                 <p class="text-center">
-                    <a class="btn btn-cta-primary" href="https://jyfeather.shinyapps.io/1_explore" target="_blank">View on Shinyapp</a>
+                    <a class="btn btn-cta-primary" href="https://jyfeather.shinyapps.io/1_explore" target="_blank">Example</a>
                 </p>
             </div><!--//block-->   
 
             <!-- 4th -->
             <div class="block">
                 <h3 class="sub-title text-center">SICE for multiple group comparison</h3>
-                <p>Say Something ...</p>
+                <p>SICE was used in <a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3068623/">this study</a> to compare the brain connectivity networks across three groups, the Alzheimer's disease, Mild Cognitive Impairment, and Normal Aging. A particularly visualization form, a "checkbox" figure is used to visualize each network. For instance, in this checkbox figure, each row and each column represents a brain region, and a check in the figure represents that the two corresponding brain regions are connected. By making the rows and the columns correspond to the same set of brain regions following the same order, it makes the network comparison across groups easier.</p>
+                <img src="{{ site.baseurl }}public/images/compare.png" alt=""/>
+                <br/>
                 <p class="text-center">
-                    <a class="btn btn-cta-primary" href="https://jyfeather.shinyapps.io/4_Huang" target="_blank">View on Shinyapp</a>
+                    <a class="btn btn-cta-primary" href="https://jyfeather.shinyapps.io/4_Huang" target="_blank">Example</a>
                 </p>
             </div><!--//block-->
+
+            <!-- 5th -->
+            <hr/>
+            <div class="block">
+                <p class="text-center">
+                    <a class="btn btn-cta-primary" href="" target="_blank">Play with Your Data</a>
+                </p>
+            </div>
             
             </div><!--//docs-inner-->         
         </div><!--//container-->
