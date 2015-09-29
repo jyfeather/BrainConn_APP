@@ -14,7 +14,7 @@ shinyUI(fluidPage(
                tabPanel("MCI", d3heatmapOutput("heat_MCI", width = "1000px", height = "800px")),
                tabPanel("AD", d3heatmapOutput("heat_AD", width = "1000px", height = "800px"))
              ),
-             sliderInput('lambda', label = "Select Penalty", min = 0.001, max = 0.002, step = 0.0005, value = 0.001)),
+             sliderInput('lambda', label = "Select Penalty", min = 0.001, max = 0.01, step = 0.0005, value = 0.001)),
     tabPanel("Connectivity Difference"),
     tabPanel("Connectivity Strength"),
     
