@@ -2,12 +2,7 @@
 library(networkD3)
 library(glasso)
 
-# Load data once
-dataobs <- read.csv(file = "MRI_AD.csv", header = T)
-datacov <- cov(t(dataobs))
-res <- glasso(s = datacov, rho = 0.001)
-res <- res$wi
-
+################### Function Definiton Begin ####################
 # convert inverse covariance matrix to links
 wi2link <- function(mat) {
   mat <- abs(mat)
@@ -30,20 +25,40 @@ range01 <- function(var, min, max) {
   res <- (var-min)/(max-min)
   return(res)
 }
+################### Function Definiton END ####################
 
-# prepare dataset for plotting
-links <- wi2link(res)
+################### Logic Begin ###################
+# Prepare data
+dataobs <- read.csv(file = "MRI_AD.csv", header = T)
+datacov <- cov(dataobs)
 nodes <- read.csv(file = "AAL_Yan.csv")
+# refer to matlab toolbox: https://sites.google.com/site/bctnet/
+measure = c("Global Efficiency", "Local Efficiency", 
+                           "Small World Index", "Clustering Coef",
+                           "Assortivity", "Degree", "Mordularity")
+statsTable <- data.frame(measure, value = rep(NA, length(measure)))
 
 # shiny server
 shinyServer(function(input, output) {
+  # generate inverse covariance matrix given lambda
+  wi <- reactive({
+    res <- glasso(s = datacov, rho = input$lambda)
+    res <- res$wi
+  })
+  
+  # network plot
   output$networkPlot <- renderForceNetwork({
-     forceNetwork(Nodes = nodes,
-                  Links = links[which(links$weight>input$threshold),],
+     links <- wi2link(wi())
+     forceNetwork(Nodes = nodes, 
+                  Links = links[which(links$weight>input$thershold),],
                   Source = "from", Target = "to",
                   Value = "weight", NodeID = "name",
-                  Group = "region", opacity = input$opacity_node, 
-                  zoom = input$zoom, legend = input$legend,
-                  opacityNoHover = input$opacity_text)
+                  Group = "region", zoom = TRUE, legend = input$legend)
+  })
+  
+  # stats plot
+  output$stats <- renderTable({
+    statsTable  
   })
 })
+################### Logic END ###################

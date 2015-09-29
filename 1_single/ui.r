@@ -11,26 +11,30 @@ shinyUI(fluidPage(
   # Application title
   titlePanel('Brain Connectivity Network Simulator'),
   
-  tags$h3("Explore Brain Network"),
+  h3("Single Group Analysis"),
   hr(),
   
-  sidebarLayout(
+  fluidRow(
+    column(4, sliderInput('lambda', 
+                          label = 'choose penalty to control sparsity',
+                          min = 0.001, max = 0.005, step = 0.001, value = 0.002)),
+    column(4, sliderInput('thershold', 
+                          label = 'choose threshold to control sparsity',
+                          min = 0, max = 1, step = 0.1, value = 0.3)),
+    column(4, checkboxInput('legend', label = 'show legends', value = FALSE))
+  ),
+  
+  fluidRow(
     # Show network graph
-    mainPanel(
+    column(8,
+      h3("Network Visualization"),
       forceNetworkOutput('networkPlot')
     ),
     
-    sidebarPanel(
-      sliderInput('threshold', label = 'choose threshold to control amounts of links',
-                  min = 0, max = 1, step = 0.1, value = 0.2),
-      sliderInput('opacity_node', label = 'choose opacity for nodes',
-                  min = 0, max = 1, step = 0.2, value = 0.8),
-      sliderInput('opacity_text', label = 'choose opacity for labels',
-                  min = 0, max = 1, step = 0.5, value = 0),
-      
-      checkboxInput('legend', label = 'show legends', value = FALSE),
-      checkboxInput('stats', label = 'show stats', value = FALSE),
-      checkboxInput('zoom', label = 'trigger zoom', value = FALSE)
+    # show network stats
+    column(4,
+      h3("Complex Network Statistics"),
+      tableOutput("stats")
     )
   )
 ))
