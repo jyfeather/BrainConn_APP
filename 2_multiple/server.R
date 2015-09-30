@@ -46,21 +46,33 @@ shinyServer(function(input, output) {
     fit_AD <- glasso(s = cov_AD, rho = input$lambda)
     gh_AD <- matScale(fit_AD$wi)
     dendrogram <- getDendrogram(gh_AD)
-    #heatmap(gh_AD, Rowv = dendrogram, Colv = "Rowv", reorderfun = reorderfun) 
-    d3heatmap(gh_AD, Rowv = "none", Colv = "Rowv", colors = grey(8:2/8)) 
+    if (input$same) {
+      d3heatmap(gh_AD, Rowv = FALSE, Colv = "Rowv", colors = grey(8:2/8),
+                labRow = nodes[order(nodes$id),"name"], labCol = nodes[order(nodes$id),"name"]) 
+    } else {
+      d3heatmap(gh_AD, Rowv = dendrogram, Colv = "Rowv", reorderfun = reorderfun, colors = grey(8:2/8))
+    }
   })
   output$heat_NL<- renderD3heatmap({
     fit_NL <- glasso(s = cov_NL, rho = input$lambda)
     gh_NL <- matScale(fit_NL$wi)
     dendrogram <- getDendrogram(gh_NL)
-    d3heatmap(gh_NL, Rowv = dendrogram, Colv = "Rowv", reorderfun = reorderfun, 
-              colors = grey(8:0/8), brush_color = "#000000") 
+    if (input$same) {
+      d3heatmap(gh_NL, Rowv = FALSE, Colv = "Rowv", colors = grey(8:2/8),
+                labRow = nodes[order(nodes$id),"name"], labCol = nodes[order(nodes$id),"name"]) 
+    } else {
+      d3heatmap(gh_NL, Rowv = dendrogram, Colv = "Rowv", reorderfun = reorderfun, colors = grey(8:2/8)) 
+    }
   })
   output$heat_MCI<- renderD3heatmap({
     fit_MCI <- glasso(s = cov_MCI, rho = input$lambda)
     gh_MCI <- matScale(fit_MCI$wi)
     dendrogram <- getDendrogram(gh_MCI)
-    d3heatmap(gh_MCI, Rowv = dendrogram, Colv = "Rowv", reorderfun = reorderfun, 
-              colors = grey(8:0/8), brush_color = "#000000") 
+    if (input$same) {
+      d3heatmap(gh_MCI, Rowv = FALSE, Colv = "Rowv", colors = grey(8:2/8),
+                labRow = nodes[order(nodes$id),"name"], labCol = nodes[order(nodes$id),"name"])
+    } else {
+      d3heatmap(gh_MCI, Rowv = dendrogram, Colv = "Rowv", reorderfun = reorderfun, colors = grey(8:2/8)) 
+    }
   })
 })
