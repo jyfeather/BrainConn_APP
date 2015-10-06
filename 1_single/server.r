@@ -29,36 +29,49 @@ range01 <- function(var, min, max) {
 
 ################### Logic Begin ###################
 # Prepare data
-dataobs <- read.csv(file = "MRI_AD.csv", header = T)
-datacov <- cov(dataobs)
-nodes <- read.csv(file = "AAL_Yan.csv")
-# refer to matlab toolbox: https://sites.google.com/site/bctnet/
-measure = c("Global Efficiency", "Local Efficiency", 
-                           "Small World Index", "Clustering Coef",
-                           "Assortivity", "Degree", "Mordularity")
-statsTable <- data.frame(measure, value = rep(NA, length(measure)))
+# dataobs <- read.csv(file = "MRI_AD.csv", header = T)
+# datacov <- cov(dataobs)
+# nodes <- read.csv(file = "AAL_Yan.csv")
+# # refer to matlab toolbox: https://sites.google.com/site/bctnet/
+# measure = c("Global Efficiency", "Local Efficiency", 
+#                            "Small World Index", "Clustering Coef",
+#                            "Assortivity", "Degree", "Mordularity")
+# statsTable <- data.frame(measure, value = rep(NA, length(measure)))
 
 # shiny server
 shinyServer(function(input, output) {
+  inputdata <- reactive({
+    inFile <- input$inputFile
+    if (is.null(inFile)) {
+      return(NULL)
+    }
+    read.csv(inFile$datapath, header = TRUE)
+  })
+  
+  output$sampletable <- renderTable({
+    tmp <- inputdata()
+    tmp[1:10, 1:10]
+  })
+  
   # generate inverse covariance matrix given lambda
-  wi <- reactive({
-    res <- glasso(s = datacov, rho = input$lambda)
-    res <- res$wi
-  })
-  
-  # network plot
-  output$networkPlot <- renderForceNetwork({
-     links <- wi2link(wi())
-     forceNetwork(Nodes = nodes, 
-                  Links = links[which(links$weight>input$thershold),],
-                  Source = "from", Target = "to",
-                  Value = "weight", NodeID = "name",
-                  Group = "region", zoom = TRUE, legend = input$legend)
-  })
-  
-  # stats plot
-  output$stats <- renderTable({
-    statsTable  
-  })
+#   wi <- reactive({
+#     res <- glasso(s = datacov, rho = input$lambda)
+#     res <- res$wi
+#   })
+#   
+#   # network plot
+#   output$networkPlot <- renderForceNetwork({
+#      links <- wi2link(wi())
+#      forceNetwork(Nodes = nodes, 
+#                   Links = links[which(links$weight>input$thershold),],
+#                   Source = "from", Target = "to",
+#                   Value = "weight", NodeID = "name",
+#                   Group = "region", zoom = TRUE, legend = input$legend)
+#   })
+#   
+#   # stats plot
+#   output$stats <- renderTable({
+#     statsTable  
+#   })
 })
 ################### Logic END ###################
