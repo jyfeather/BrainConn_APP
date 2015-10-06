@@ -294,6 +294,10 @@ pre code {
 .docs .block {
   margin-bottom: 60px;
 }
+.docs .block .maintext {
+  overflow: hidden;
+  text-align: justify;
+}
 .docs .code-block {
   margin: 30px inherit;
 }
@@ -422,6 +426,10 @@ pre code {
 }
 .contact .author-message .speech-bubble .source .title {
   color: #0c86ae;
+}
+.contact .author-message .speech-bubble p {
+  overflow: hidden;
+  text-align: justify;
 }
 .contact .info .sub-title {
   color: #0e98c5;
