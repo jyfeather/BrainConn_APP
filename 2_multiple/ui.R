@@ -12,7 +12,7 @@ shinyUI(fluidPage(
   ),
   
   tabsetPanel(
-   tabPanel("Normal Aging", d3heatmapOutput("heat_NL", width = "1000px", height = "800px")),
+   tabPanel("Normal Aging", d3heatmapOutput("heat_NL", width = "950px", height = "800px")),
    tabPanel("Mild Cognitive Impairment", d3heatmapOutput("heat_MCI", width = "1000px", height = "800px")),
    tabPanel("Alzheimer's Disease", d3heatmapOutput("heat_AD", width = "1000px", height = "800px"))
   )

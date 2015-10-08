@@ -1,11 +1,10 @@
 library(shiny)
 library(networkD3)
+library(d3heatmap)
 
 shinyUI(fluidPage(
-  
-  # Load D3.js
   tags$head(
-    tags$script(src = 'http://d3js.org/d3.v3.min.js')
+    tags$link(rel = "stylesheet", type = "text/css", href = "temp.css")
   ),
   
   # Application title
@@ -32,25 +31,21 @@ shinyUI(fluidPage(
   
   ###
   helpText('STEP 4: Choose Penalty Parameter'),
-  sliderInput('lambda', label = 'choose penalty to control sparsity',
-              min = 0.001, max = 0.005, step = 0.001, value = 0.002),
+  fluidRow(
+    column(4, sliderInput('lambda', label = 'choose penalty to control sparsity',
+              min = 0.001, max = 0.005, step = 0.0002, value = 0.0035)),
+    column(4, actionButton('updateNet', 'Update Network'))
+  ),
   hr(),
   
   ###
   helpText('STEP 5: Show Results'),
-  fluidRow(
-    # Show network graph
-    column(8,
-      h3("Network Visualization"),
-      forceNetworkOutput('networkPlot')
-    ),
-    
-    # show network stats
-    column(4,
-      h3("Complex Network Statistics"),
-      tableOutput("stats")
-    )
+  tabsetPanel(
+    tabPanel('Interactive Network', forceNetworkOutput('networkPlot')),
+    tabPanel('Interactive Checkbox', d3heatmapOutput("checkboxPlot", width = '1000', height = '800')),
+    tabPanel('Network Statistics', tableOutput("stats"))
   ),
+
   hr(),
   
   ###
