@@ -41,15 +41,9 @@ shinyUI(fluidPage(
   ###
   helpText('STEP 5: Show Results'),
   tabsetPanel(
-    tabPanel('Interactive Network', forceNetworkOutput('networkPlot')),
-    tabPanel('Interactive Checkbox', d3heatmapOutput("checkboxPlot", width = '1000', height = '800')),
-    tabPanel('Network Statistics', tableOutput("stats"))
-  ),
-
-  hr(),
-  
-  ###
-  helpText('STEP 6: Download Results'),
-  hr()
-
+    tabPanel('Interactive Network', br(), forceNetworkOutput('networkPlot')),
+    tabPanel('Interactive Checkbox', br(), d3heatmapOutput("checkboxPlot", width = '1000', height = '800'), br()),
+    tabPanel('Network Statistics', br(), tableOutput("stats"),
+             br(), downloadButton('downloadStats', 'Download Data'))
+  )
 ))
