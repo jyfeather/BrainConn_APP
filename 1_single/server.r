@@ -33,7 +33,6 @@ range01 <- function(var, min, max) {
 ################### Logic Begin ###################
 # Prepare data
 nodes <- read.csv(file = "AAL_Yan.csv")
-# refer to matlab toolbox: https://sites.google.com/site/bctnet/
 measure = c("Assortivity", "Cliques", "Transitivity")
 statsTable <- data.frame(measure, value = rep(NA, length(measure)),
                          meaning = c("The assortativity coefficient is positive is similar vertices (based on some external property) tend to connect to each, and negative otherwise.",
@@ -83,7 +82,7 @@ shinyServer(function(input, output) {
     forceNetwork(Nodes = nodes, Links = links,
                 Source = "from", Target = "to",
                 Value = "weight", NodeID = "name",
-                Group = "region", zoom = TRUE, legend = input$legend)
+                Group = "region", zoom = TRUE)
   })
   output$networkPlot <- renderForceNetwork({
     networkPlot() 

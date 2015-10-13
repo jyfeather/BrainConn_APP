@@ -8,7 +8,8 @@ shinyUI(fluidPage(
   ),
   
   # Application title
-  titlePanel('Brain Connectivity Example'),
+  titlePanel(tags$a(href = "http://brainconnectivity.cc/", "Brain Connectivity Example")),
+  helpText("!", tags$a(href = "https://github.com/jyfeather/BrainConn_APP/issues/new", "Bug Report")), 
   hr(),
   
   ###
