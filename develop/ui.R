@@ -1,19 +1,53 @@
 library(shiny)
 library(d3heatmap)
 
-shinyUI(fluidPage(
-  titlePanel('Brain Connectivity Network Simulator'),
-  tags$h3('Multiple Group Comparison'),
-  hr(),
-  
-  fluidRow(
-    column(6, sliderInput('lambda', label = "Select Penalty", min = 0.001, max = 0.01, step = 0.0005, value = 0.001)),
-    column(6, checkboxInput('same', 'Same Order for Comparison'))
-  ),
-  
-  tabsetPanel(
-   tabPanel("Normal Aging", d3heatmapOutput("heat_NL", width = "950px", height = "800px")),
-   tabPanel("Mild Cognitive Impairment", d3heatmapOutput("heat_MCI", width = "1000px", height = "800px")),
-   tabPanel("Alzheimer's Disease", d3heatmapOutput("heat_AD", width = "1000px", height = "800px"))
-  )
+shinyUI(
+  navbarPage(tags$a(href = "http://brainconnectivity.cc/", "Brain Connectivity"),
+                   tabPanel("Import Data",
+                            navlistPanel("Input Type",
+                                         tabPanel("Time Series Data"),
+                                         tabPanel("Covariance Matrix"),
+                                         "General Settings",
+                                         tabPanel("ROI notations"),
+                                         tabPanel("ROI coordinates"))),
+                   tabPanel("Network Construction",
+                            fluidRow(column(4, sliderInput("density", label = h3("Choose Density of Network"),
+                                                            min = 0, max = 1, value = 0.2)),
+                                     column(8, checkboxGroupInput("ROIs", label = h3("Choose ROIs"),
+                                                                  choices = list("Supplementary Motor Area" = 1,
+                                                                                 "Olfactory Cortex" = 2,
+                                                                                 "Superior Frontal Gyrus" = 3),
+                                                                  selected = c(1,2))))),
+                   tabPanel("Statistics Computation",
+                            fluidRow(column(12, checkboxGroupInput("stats", label = h3("Choose Graph Statistics"),
+                                                                   choices = list("Binary: Assortativity" = 1,
+                                                                                  "Binary: Betweenness Centrality" = 2,
+                                                                                  "Binary: Clustering Coefficient Global" = 3,
+                                                                                  "Binary: Clustering Coefficient Local" = 4,
+                                                                                  "Binary: Characteristic Path Global" = 5,
+                                                                                  "Binary: Characteristic Path Local" = 6,
+                                                                                  "Binary: Community Structure Newman - Affiliation Vector" = 7,
+                                                                                  "Binary: Community Structure Louvain - Affiliation Vector" = 8,
+                                                                                  "Binary: Community Structure Newman - Modularity Output" = 9,
+                                                                                  "Binary: Community Structure Louvain - Modularity Output" = 10,
+                                                                                  "Binary: Degree" = 11,
+                                                                                  "Binary: Density" = 12,
+                                                                                  "Binary: Distance Matrix" = 13,
+                                                                                  "Binary: Eccentricity" = 14,
+                                                                                  "Binary: Edge Betweenness Centrality" = 15,
+                                                                                  "Binary: Efficiency Global" = 16,
+                                                                                  "Binary: Efficiency Local" = 17,
+                                                                                  "Binary: Eigenvector Centrality" = 18,
+                                                                                  "Binary: Flow Coefficient Global" = 19,
+                                                                                  "Binary: Flow Coefficient Local" = 20,
+                                                                                  "Binary: Eigenvector Centrality" = 21,
+                                                                                  "Binary: Flow Coefficient Global" = 22,
+                                                                                  "Binary: Flow Coefficient Local" = 23,
+                                                                                  "Binary: Graph Radius" = 24,
+                                                                                  "... ..." = 25),
+                                                                   selected = c(1,2,3))))),
+                   tabPanel("Calculate"),
+                   navbarMenu("Visualizations",
+                              tabPanel("Interactive Network"),
+                              tabPanel("Interactive Checkbox"))
 ))
